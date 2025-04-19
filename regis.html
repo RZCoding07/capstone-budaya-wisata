@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/login.css" />
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+    <title>Registration</title>
+  </head>
+  <body>
+    <header>
+      <a href="">MyCulture</a>
+      <ul class="navbar">
+        <li><a href="..home.html#home">HOME</a></li>
+        <li><a href="..home.html#about">ABOUT</a></li>
+        <li><a href="..home.html#culture">CULTURE</a></li>
+        <li><a href="..home.html#contact">CONTACT</a></li>
+        <li><a href="tour.html">TOUR</a></li>
+      </ul>
+    </header>
+    <div class="container-login">
+      <h1>Registration</h1>
+      <form method="post" id="regis-form">
+        <div class="form-group">
+          <input type="text" id="username" name="username" placeholder="Username" required />
+          <i class="bx bxs-user"></i>
+        </div>
+        <div class="form-group">
+          <input type="email" id="email" name="email" placeholder="Email" required />
+          <i class="bx bxl-gmail"></i>
+        </div>
+        <div class="form-group">
+          <input type="password" id="password" name="password" placeholder="Password" required />
+          <i class="bx bxs-lock-alt"></i>
+        </div>
+        <button type="submit" id="regis-btn">
+          <span class="btn-text">Submit</span>
+          <div class="loader"></div>
+        </button>
+        <p>Already have an account? <a href="index.html">Login</a></p>
+      </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="js/api.js" type="module"></script>
+    <script>
+      const photoInput = document.getElementById('photoProfil');
+      const photoLabel = document.getElementById('photoLabel');
+
+      photoInput.addEventListener('change', function () {
+        const fileName = this.files[0]?.name || 'Enter Profile Photo';
+        photoLabel.textContent = fileName;
+      });
+    </script>
+  </body>
+</html>

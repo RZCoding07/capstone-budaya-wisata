@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="..styles/main.css" />
+  <title>MyCulture</title>
+</head>
+
+<body id="home">
+  <header>
+    <a href="">MyCulture</a>
+    <ul class="navbar">
+      <li>
+        <form id="search-form" class="search-form">
+          <input type="text" id="search-input" placeholder="Search..." />
+          <button type="submit">🔍</button>
+        </form>
+      </li>
+      <li><a href="#home">HOME</a></li>
+      <li><a href="#about">ABOUT</a></li>
+      <li><a href="#culture">CULTURE</a></li>
+      <li><a href="#contact">CONTACT</a></li>
+      <li><a href="#tour">TOUR</a></li>
+      <li><a id="dashboard-link" style="display: none;" href="./article.html">DASHBOARD</a></li>
+      <li><a id="login-button" href="..index.html">SIGN IN</a></li>
+      <li><a id="logout-button" href="javascript:logout()">SIGN OUT</a></li>
+    </ul>
+  </header>
+  <main>
+    <section class="hero-section">
+      <div class="group">
+        <h1 style="letter-spacing: 3px">CULTURAL HERITAGE</h1>
+        <div class="p-home">
+          <p>
+            Cultural heritage refers to cultural assets in the form of objects, buildings, structures, sites, or areas
+            that hold historical, scientific, educational, religious, and cultural significance.
+            These assets are protected by law to ensure their preservation. Their existence serves as evidence of a
+            civilization and a nation's identity, making it essential to safeguard and conserve them for
+            future generations.
+          </p>
+          <a href="#about">Get Started!</a>
+        </div>
+      </div>
+      <div class="group-img">
+        <img src="..assets/images/pakaiangorontalo.png" alt="gorontalo" />
+      </div>
+    </section>
+    <section id="about" class="about">
+      <div class="about-title">
+        <h4>ABOUT</h4>
+      </div>
+      <div class="about-container">
+        <div><img src="..assets/images/reog.png" alt="reog" /></div>
+        <div>
+          <p>
+            Here, we showcase the beauty and diversity of Indonesian culture. From mesmerizing traditional dances to
+            delicious local cuisines, we provide comprehensive information to introduce the richness of
+            the archipelago’s heritage. Explore the history, arts, traditions, and cultural legacies passed down through
+            generations. Enjoy this cultural journey with us!
+          </p>
+        </div>
+      </div>
+    </section>
+    <section id="culture" class="card-body">
+      <h4 class="about-title">CULTURE</h4>
+      <div class="card-container" id="culture-container"></div>
+      <div class="overlay" id="overlay"></div>
+      <div class="full-content" id="expanded-content">
+        <img id="expanded-image" src="" alt="Gambar Detail" />
+        <h2 style="padding: 10px 0px" id="expanded-title"></h2>
+        <p id="expanded-text"></p>
+        <p><strong>Location:</strong> <span id="popup-location"></span></p>
+        <div id="feedback-section">
+          <h3>Feedback</h3>
+          <div id="feedback-container" class="feedback"></div>
+          <div id="feedback-form-container">
+            <h4>Leave Your Feedback</h4>
+            <div id="feedback-form">
+              <label for="rating">Rating:</label>
+              <select id="rating">
+                <option value="5">5 - Excellent</option>
+                <option value="4">4 - Good</option>
+                <option value="3">3 - Average</option>
+                <option value="2">2 - Poor</option>
+                <option value="1">1 - Terrible</option>
+              </select>
+              <textarea id="feedback-comment" placeholder="Write your feedback here..."></textarea>
+              <button id="submit-feedback">Submit Feedback</button>
+            </div>
+          </div>
+        </div>
+        <button id="close-button" class="close-btn">Close</button>
+      </div>
+    </section>
+    <section id="tour" class="container-tour">
+      <h4>TOURING</h4>
+      <div class="container-tour-card" id="tour-container"></div>
+    </section>
+  </main>
+  <footer></footer>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      initApp();
+    });
+
+    function initApp() {
+      // loadCultureData();
+      // loadTourData();
+      // setupSearchFunctionality();
+      checkLoginStatus();
+
+    }
+
+    function checkLoginStatus() {
+      const token = localStorage.getItem('token');
+      const user = localStorage.getItem('user');
+      if (token) {
+        $('#login-button').hide();
+        $('#logout-button').show();
+        if(user.role === 'admin') {
+          $('#dashboard-link').show();
+        } else {
+          $('#dashboard-link').hide();
+        }
+      } else {
+        $('#login-button').show();
+        $('#logout-button').hide();
+        $('#dashboard-link').hide();
+      }
+    }
+
+    function setupSearchFunctionality() {
+
+    }
+
+    function loadCultureData() {
+      // Fetch and display culture data here
+    }
+
+    function loadTourData() {
+      // Fetch and display tour data here
+    }
+
+
+    function logout() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = './index.html';
+    }
+    function showFeedbackForm() {
+      const feedbackForm = document.getElementById("feedback-form");
+      feedbackForm.style.display = "block";
+    }
+  </script>
+</body>
+
+</html>

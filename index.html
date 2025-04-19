@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="styles/login.css" />
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+  <title>Login</title>
+</head>
+
+<body>
+  <header>
+    <a href="">MyCulture</a>
+    <ul class="navbar">
+      <li><a href="..home.html#home">HOME</a></li>
+      <li><a href="..home.html#about">ABOUT</a></li>
+      <li><a href="..home.html#culture">CULTURE</a></li>
+      <li><a href="..home.html#contact">CONTACT</a></li>
+      <li><a href="tour.html">TOUR</a></li>
+    </ul>
+  </header>
+  <div class="container-login">
+    <h1>Login</h1>
+    <form method="post" id="login-form">
+      <div class="form-group">
+        <input type="email" id="email" name="email" placeholder="Email" required />
+        <i class="bx bxl-gmail"></i>
+      </div>
+      <div class="form-group">
+        <input type="password" id="password" name="password" placeholder="Password" required />
+        <i class="bx bxs-lock-alt"></i>
+      </div>
+      <button type="submit" id="login-btn" class="text-center">
+        <span class="btn-text">Login</span>
+        <div class="loader text-center"></div>
+      </button>
+      <p>Don't have an account yet? <a href="regis.html">Create account</a></p>
+    </form>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      // Login Form Handler
+      $('#login-form').on('submit', async function (event) {
+        event.preventDefault();
+
+        const $loginBtn = $('#login-btn');
+        const email = $('#email').val();
+        const password = $('#password').val();
+
+        // Show loading state
+        $loginBtn.prop('disabled', true);
+        $loginBtn.find('.btn-text').hide();
+        $loginBtn.find('.loader').show();
+
+        try {
+          const response = await $.ajax({
+            url: 'https:///be-capstone-smkn9.vercel.app/login',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+              identifier: email, // Using identifier to match BE which accepts username or email
+              password: password
+            })
+          });
+
+          console.log(response);
+
+          if (response && response.token) {
+            // Store the access token
+            localStorage.setItem('token', response.token);
+
+            // Get user data
+            try {
+              const userResponse = await $.ajax({
+                url: 'https://be-capstone-smkn9.vercel.app/me',
+                method: 'POST',
+                contentType: 'application/json',
+                headers: {
+                  Authorization: `Bearer ${response.token}`
+                }
+              });
+
+              // Store user data
+              localStorage.setItem('user', JSON.stringify(userResponse.payload));
+
+              const role = userResponse.payload.role; // Assuming the role is in the payload
+
+              if (role === 'admin') {
+                window.location.href = 'article.html'; // Redirect to admin page
+              } else if (role === 'user') {
+                window.location.href = 'home.html'; // Redirect to user page
+              } else {
+                alert('Unknown role: ' + role);
+              }
+
+
+            } catch (userError) {
+              console.error('Failed to fetch user data:', userError);
+              alert('Login successful, but failed to fetch user data.');
+            }
+    
+
+          }
+        } catch (error) {
+          console.error('Login failed:', error);
+          const errorMsg = error.responseJSON?.message || 'An error occurred during login';
+          alert('Login failed: ' + errorMsg);
+        } finally {
+          // Reset button state
+          $loginBtn.prop('disabled', false);
+          $loginBtn.find('.btn-text').show();
+          $loginBtn.find('.loader').hide();
+        }
+      });
+
+      // Registration Form Handler
+      $('#regis-form').on('submit', async function (event) {
+        event.preventDefault();
+
+        const $regisBtn = $('#regis-btn');
+        const fullname = $('#fullname').val();
+        const username = $('#username').val();
+        const password = $('#password').val();
+        const email = $('#email').val();
+        const role = 'user'; // Default role, or get from form if you have role selection
+
+        // Show loading state
+        $regisBtn.prop('disabled', true);
+        $regisBtn.find('.btn-text').hide();
+        $regisBtn.find('.loader').show();
+
+        try {
+          const response = await $.ajax({
+            url: 'https://be-capstone-smkn9,vercel.app/users', // Update with your register endpoint
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+              fullname: fullname,
+              username: username,
+              password: password,
+              email: email,
+              role: role
+            })
+          });
+
+          if (response.status_code === 201) {
+            alert('Registration successful!');
+            window.location.href = 'index.html';
+          } else {
+            throw new Error(response.message || 'Registration failed');
+          }
+        } catch (error) {
+          console.error('Registration failed:', error);
+          const errorMsg = error.responseJSON?.message || error.message || 'An error occurred during registration';
+          alert('Registration failed: ' + errorMsg);
+        } finally {
+          // Reset button state
+          $regisBtn.prop('disabled', false);
+          $regisBtn.find('.btn-text').show();
+          $regisBtn.find('.loader').hide();
+        }
+      });
+    });
+  </script>
+
+
+</body>
+
+</html>

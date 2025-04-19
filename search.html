@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles/main.css">
+    <style>
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: rgba(33, 16, 0, 0.905);
+        }
+
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .card h3 {
+            margin: 10px 0 5px;
+        }
+
+        .card p {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .pagination {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .pagination button {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .pagination button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+    <title>Search || Culture & Tour</title>
+</head>
+<body>
+    <header>
+        <a href="">MyCulture</a>
+        <ul class="navbar">
+            <li>
+                <form id="search-form" class="search-form">
+                    <input type="text" id="search-input" placeholder="Search..." />
+                    <button type="submit">🔍</button>
+                </form>
+            </li>        
+            <li><a href="home.html">HOME</a></li>
+            <li><a href="home.html#about">ABOUT</a></li>
+            <li><a href="home.html#culture">CULTURE</a></li>
+            <li><a href="home.html#contact">CONTACT</a></li>
+            <li><a href="home.html#tour">TOUR</a></li>
+            <li><a id="dashboard-link" style="display: none;" href="./article.html">DASHBOARD</a></li>
+            <li><a id="login-button" href="..index.html">SIGN IN</a></li>
+            <li><a id="logout-button" href="javascript:logout()">SIGN OUT</a></li>
+        </ul>
+    </header>
+    <main style="padding: 20px">
+        <h2>Search Results</h2>
+        <div id="results-container" class="card-container"></div>
+        <div id="pagination-container" class="pagination"></div>
+    </main>      
+    <script src="js/auth.js"></script>
+    <script type="module">
+        document.getElementById("search-form").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const query = document.getElementById("search-input").value.trim();
+            if (query) {
+              window.location.href = `search.html?q=${encodeURIComponent(query)}`;
+            }
+        });
+
+        const query = new URLSearchParams(window.location.search).get("q");
+        document.getElementById("search-input").value = query;
+
+        const container = document.getElementById("results-container");
+        const paginationContainer = document.getElementById("pagination-container");
+        let currentPage = 1;
+        const resultsPerPage = 6;
+        let allResults = [];
+
+        async function fetchSearchResults() {
+            if (!query) {
+                container.innerHTML = "<p>No search query provided.</p>";
+                return;
+            }
+
+            try {
+                const res = await fetch("https://capstone-api-production-e3c7.up.railway.app/rekomendasi", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ query: query })
+                });
+
+                const response = await res.json();
+                console.log("API response:", response);
+
+                if (!response || !Array.isArray(response.hasil)) {
+                    container.innerHTML = "<p>Failed to fetch valid data from the API.</p>";
+                    return;
+                }
+
+                // Filter results based on the query
+                const results = response.hasil.filter(item =>
+                    item.combined.toLowerCase().includes(query.toLowerCase())
+                );
+
+                if (results.length === 0) {
+                    container.innerHTML = "<p>No results found.</p>";
+                    return;
+                }
+
+                allResults = results;
+                setupPagination(results.length);
+                displayResults(results);
+
+            } catch (error) {
+                console.error(error);
+                container.innerHTML = "<p>Failed to fetch results.</p>";
+            }
+        }
+
+        function displayResults(results) {
+            const startIndex = (currentPage - 1) * resultsPerPage;
+            const endIndex = startIndex + resultsPerPage;
+            const paginatedResults = results.slice(startIndex, endIndex);
+
+            container.innerHTML = '';
+            const budayaData = paginatedResults.filter(item => item.kategori.toLowerCase() === "budaya");
+            const tourData = paginatedResults.filter(item => item.kategori.toLowerCase() === "tour");
+
+            if (budayaData.length > 0) {
+                const budayaSection = document.createElement("section");
+                budayaSection.innerHTML = `<h3>Budaya</h3>`;
+                const budayaGrid = document.createElement("div");
+                budayaGrid.className = "card-container";
+                budayaData.forEach(item => {
+                    budayaGrid.appendChild(createCard(item));
+                });
+                budayaSection.appendChild(budayaGrid);
+                container.appendChild(budayaSection);
+            }
+
+            if (tourData.length > 0) {
+                const tourSection = document.createElement("section");
+                tourSection.innerHTML = `<h3>Tour</h3>`;
+                const tourGrid = document.createElement("div");
+                tourGrid.className = "card-container";
+                tourData.forEach(item => {
+                    tourGrid.appendChild(createCard(item));
+                });
+                tourSection.appendChild(tourGrid);
+                container.appendChild(tourSection);
+            }
+        }
+
+        function createCard(item) {
+            const card = document.createElement("div");
+            card.className = "card";
+            card.innerHTML = `
+                <img src="${item.image}" alt="${item.judul}" />
+                <h3>${item.judul}</h3>
+                <p>${item.deskripsi.substring(0, 100)}...</p>
+                <iframe src="${item.lokasi}" width="100%" height="150" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            `;
+            return card;
+        }
+
+        function setupPagination(totalResults) {
+            const totalPages = Math.ceil(totalResults / resultsPerPage);
+
+            paginationContainer.innerHTML = '';
+            for (let i = 1; i <= totalPages; i++) {
+                const button = document.createElement("button");
+                button.textContent = i;
+                button.onclick = () => {
+                    currentPage = i;
+                    displayResults(allResults);
+                    setupPagination(totalResults);
+                };
+                if (i === currentPage) button.disabled = true;
+                paginationContainer.appendChild(button);
+            }
+        }
+
+        fetchSearchResults();
+    </script>
+</body>
+</html>

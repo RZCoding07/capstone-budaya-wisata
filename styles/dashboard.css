@@ -1,0 +1,369 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:wght@200;300;400;500;600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Pastikan body ambil penuh layar */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f7f7f7;
+  font-family: Arial, sans-serif;
+  overflow-x: hidden;
+  /* cegah scroll horizontal */
+}
+
+/* Bungkus semua konten dengan container */
+.wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.sidebar {
+  width: 220px;
+  background: linear-gradient(to bottom, #0022ff, #5096ff);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+}
+
+.link-home {
+  margin: 20px 0px;
+  text-align: center;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.menu-item {
+  text-decoration: none;
+  color: white;
+  text-align: center;
+  padding: 15px 0px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  letter-spacing: 1px;
+}
+
+.menu-item:hover {
+  background-color: #ffffff;
+}
+
+.menu-item:hover {
+  color: #0022ff;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 40px 20px;
+  max-width: none;
+}
+
+.content h1 {
+  margin-bottom: 20px;
+}
+
+form {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+form input,
+form button,
+form select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: 1.5px solid #0000004a;
+  border-radius: 4px;
+}
+
+form button {
+  background-color: #2ecc71;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+form button:hover {
+  background-color: #27ae60;
+}
+
+/* buat table read */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.259);
+  margin-top: 30px;
+}
+
+th,
+td {
+  border: 1.5px solid #00000055;
+  padding: 8px;
+  text-align: center;
+}
+
+th {
+  background-color: #007bff;
+  color: white;
+}
+
+img {
+  border-radius: 5px;
+}
+
+.action-btn {
+  padding: 5px 10px;
+  margin: 2px;
+  border: none;
+  cursor: pointer;
+  color: white;
+  border-radius: 5px;
+}
+
+.edit-btn {
+  background-color: #28a745;
+  /* Hijau */
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  /* Merah */
+}
+
+.loader {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #3498db;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: auto;
+  display: none;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
+  /* scrollbar horizontal disembunyikan */
+  font-family: Arial, sans-serif;
+  background-color: #f7f7f7;
+}
+
+.main-wrapper {
+  display: flex;
+  min-height: 100vh;
+  justify-content: center;
+  /* Memusatkan secara horizontal */
+  align-items: center;
+  /* Memusatkan secara vertikal */
+}
+
+.sidebar {
+  width: 220px;
+  background-color: #333;
+  color: white;
+  padding: 20px;
+  flex-shrink: 0;
+}
+
+.sidebar a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  margin-bottom: 15px;
+}
+
+.sidebar .link-home h2 {
+  margin: 0 0 20px 0;
+  color: #fff;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 40px 20px;
+  max-width: 800px;
+  /* Menambah lebar maksimum untuk konten */
+  text-align: center;
+  /* Memusatkan teks di dalam konten */
+}
+
+.article-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 500px;
+  margin: 0 auto 30px auto;
+}
+
+.article-form input,
+.article-form select,
+.article-form button {
+  padding: 10px;
+  font-size: 16px;
+  width: 100%;
+}
+
+.loader {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+  margin: 10px auto;
+  display: none;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.output-message {
+  margin: 10px 0;
+  color: green;
+  font-weight: bold;
+  text-align: center;
+}
+
+.article-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 30px;
+}
+
+.article-table th,
+.article-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+  vertical-align: middle;
+  color: black;
+}
+
+.article-table th {
+  background-color: #f4f4f4;
+}
+
+.article-table img {
+  max-width: 200px;
+  height: auto;
+  border-radius: 10px;
+}
+
+.article-table iframe {
+  width: 300px;
+  height: 200px;
+  border: none;
+}
+
+.action-btn {
+  padding: 5px 10px;
+  margin: 2px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.edit-btn {
+  background-color: #f0ad4e;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #d9534f;
+  color: white;
+}
+
+/* Pop-up edit artikel */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 600px;
+}
+
+.modal-header {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 25px;
+  color: #aaa;
+  cursor: pointer;
+}
+
+.modal-form input,
+.modal-form select,
+.modal-form textarea,
+.modal-form button {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.modal-form textarea {
+  height: 100px;
+}
