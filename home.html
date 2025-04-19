@@ -1201,9 +1201,14 @@
       
       // Set up map
       if (article.location) {
-        $('#map-container').html(`
-          <iframe src="${article.location}" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-        `);
+        if(article.category.toLowerCase() === 'wisata') {
+          $('#map-container').html(`
+            <iframe src="${article.location}" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          `);
+        } else {
+          $('#map-container').hide();
+        }
+
       } else {
         $('#map-container').html('<p>No location data available</p>');
       }
