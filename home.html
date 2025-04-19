@@ -1236,11 +1236,22 @@
       // In a real app, you would send this to an API
       console.log('Feedback submitted:', { rating, comment });
       
+      const user = JSON.parse(localStorage.getItem('user'));  
+
       // For demo purposes, just add it to the UI
       const feedbackHtml = `
-        <div class="feedback-item">
-          <div class="rating">Rating: ${'★'.repeat(rating)}${'☆'.repeat(5-rating)}</div>
-          <div class="comment">${comment}</div>
+        <div class="feedback-item d-flex">
+          <div class="rating">
+            <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(user.fullname)}&background=random&size=200" alt="User" class="feedback-photo">
+            <div class="feedback-details">
+              <div class="username">${user.fullname}</div>
+              <div class="rating">${'⭐'.repeat(rating)}</div>
+              <div class="ulasan">${
+                comment
+              }</div>
+
+
+        </div>
         </div>
       `;
       
