@@ -5,8 +5,846 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="styles/main.css" />
   <title>MyCulture</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *,
+    html {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: rgb(233, 233, 233);
+      font-family: 'Poppins', sans-serif;
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    /* Header Styling */
+    header {
+      font-family: 'Poppins', sans-serif;
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0);
+      height: 10vh;
+      display: flex;
+      align-items: center;
+      padding: 0 50px;
+      justify-content: space-between;
+      position: fixed;
+      transition: background-color 0.4s, color 0.4s ease-in-out;
+      z-index: 100;
+    }
+
+    header.scrolled {
+      background-color: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    header.scrolled a {
+      color: black;
+    }
+
+    header > a {
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 600;
+      font-size: 1.5rem;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    header > a:hover {
+      color: #ff9500;
+    }
+
+    header.scrolled > a {
+      color: #ff9500;
+    }
+
+    .navbar {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+      list-style: none;
+    }
+
+    .navbar li a {
+      text-decoration: none;
+      color: rgba(255, 255, 255, 0.9);
+      transition: all 0.4s;
+      border-bottom: 2px solid transparent;
+      padding: 3px 0;
+      letter-spacing: 1px;
+      font-weight: 400;
+      font-size: 0.9rem;
+    }
+
+    .navbar li a:hover {
+      border-bottom: 2px solid rgba(255, 255, 255, 0.9);
+    }
+
+    header.scrolled .navbar li a {
+      color: #333;
+    }
+
+    header.scrolled .navbar li a:hover {
+      border-bottom: 2px solid #333;
+    }
+
+    /* Search Form */
+    .search-form {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    #search-input {
+      padding: 8px 15px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      outline: none;
+      font-size: 14px;
+      color: white;
+      width: 180px;
+      transition: all 0.3s;
+    }
+
+    #search-input::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    header.scrolled #search-input {
+      border: 1px solid #ddd;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+
+    header.scrolled #search-input::placeholder {
+      color: #999;
+    }
+
+    .search-form button {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      color: white;
+      transition: transform 0.2s;
+    }
+
+    .search-form button:hover {
+      transform: scale(1.1);
+    }
+
+    header.scrolled .search-form button {
+      color: #333;
+    }
+
+    /* Login/Logout Buttons */
+    #login-button,
+    #logout-button {
+      display: block;
+      padding: 8px 16px;
+      border: 1px solid white;
+      border-radius: 20px;
+      background: rgba(255, 149, 0, 0.8);
+      color: white;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    #login-button:hover,
+    #logout-button:hover {
+      background: white;
+      color: #ff9500;
+      border: 1px solid #ff9500;
+      transform: translateY(-2px);
+    }
+
+    header.scrolled #login-button,
+    header.scrolled #logout-button {
+      border: 1px solid #ff9500;
+      background: #ff9500;
+    }
+
+    header.scrolled #login-button:hover,
+    header.scrolled #logout-button:hover {
+      background: white;
+      color: #ff9500;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      font-family: 'Montserrat', sans-serif;
+      height: 100vh;
+      background-image: linear-gradient(rgba(33, 16, 0, 0.8), rgba(24, 11, 0, 0.75)), url('assets/images/home.jpg');
+      background-position: center;
+      background-size: cover;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding: 0 50px 50px 50px;
+    }
+
+    .group {
+      width: 45%;
+      height: 70%;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .group h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 20px;
+      line-height: 1.2;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .p-home {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .p-home p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 300;
+    }
+
+    .group-img {
+      width: 35%;
+      height: 90%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .group-img img {
+      height: 400px;
+      max-width: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+      transition: transform 0.5s;
+    }
+
+    .group-img img:hover {
+      transform: translateY(-10px);
+    }
+
+    .hero-section a {
+      font-weight: 500;
+      width: 200px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 45px;
+      color: white;
+      letter-spacing: 2px;
+      text-decoration: none;
+      border: 1.5px solid rgb(255, 255, 255);
+      border-radius: 30px;
+      transition: all 0.4s;
+      font-size: 0.9rem;
+    }
+
+    .hero-section a:hover {
+      background-color: #ff9500;
+      color: white;
+      border-color: #ff9500;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(255, 149, 0, 0.4);
+    }
+
+    /* About Section */
+    .about {
+      width: 100%;
+      min-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 50px;
+      padding: 80px 0;
+      background-color: white;
+    }
+
+    .about-title {
+      font-size: 2em;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .about-title h4 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2rem;
+      color: #333;
+      position: relative;
+      display: inline-block;
+      padding-bottom: 15px;
+    }
+
+    .about-title h4::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background-color: #ff9500;
+    }
+
+    .about-container {
+      display: flex;
+      width: 90%;
+      max-width: 1200px;
+      gap: 50px;
+      align-items: center;
+    }
+
+    .about-container div {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .about-container img {
+      width: 90%;
+      max-height: 400px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+      transition: transform 0.5s;
+    }
+
+    .about-container img:hover {
+      transform: scale(1.03);
+    }
+
+    .about-container p {
+      width: 90%;
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: #555;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    /* Search Results */
+    .search-results {
+      margin: 30px auto;
+      padding: 30px;
+      background-color: white;
+      border-radius: 15px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 1200px;
+      display: none;
+    }
+
+    .search-results h3 {
+      margin-bottom: 20px;
+      color: #333;
+      font-size: 1.5rem;
+      position: relative;
+      padding-bottom: 10px;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .search-results h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background-color: #ff9500;
+    }
+
+    /* Card Styles */
+    .card-body {
+      padding: 80px 0;
+      background-color: #f8f8f8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+      width: 90%;
+      max-width: 1200px;
+      margin-top: 40px;
+    }
+
+    .card {
+      background-color: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+      height: 380px;
+      cursor: pointer;
+     padding-top: 50px;
+     padding-bottom: 50px;
+      position: relative;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      transition: transform 0.5s;
+    }
+
+    .card:hover .card-img {
+      transform: scale(1.05);
+    }
+
+    .card-content {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      height: calc(100% - 200px);
+    }
+
+    .card-category {
+      display: inline-block;
+      padding: 5px 12px;
+      background-color: #ff9500;
+      color: white;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      margin-bottom: 10px;
+      font-weight: 500;
+      width: fit-content;
+    }
+
+    .card-title {
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+      color: #333;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .card-desc {
+      color: #666;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      flex-grow: 1;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+
+    /* Overlay and Modal */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      display: none;
+      backdrop-filter: blur(5px);
+      transition: opacity 0.3s;
+    }
+
+    .full-content {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%;
+      max-width: 900px;
+      max-height: 90vh;
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      z-index: 1001;
+      display: none;
+      overflow-y: auto;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    #expanded-image {
+      width: 100%;
+      height: 350px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    #expanded-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 15px;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    #expanded-text {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: #555;
+      margin-bottom: 30px;
+    }
+
+    .map-container {
+      width: 100%;
+      height: 350px;
+      margin: 20px 0;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .map-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      width: 40px;
+      height: 40px;
+      background-color: #ff9500;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .close-btn:hover {
+      background-color: #e08200;
+      transform: scale(1.1);
+    }
+
+    /* Feedback Section */
+    #feedback-section {
+      margin-top: 30px;
+      border-top: 1px solid #eee;
+      padding-top: 30px;
+    }
+
+    #feedback-section h3 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      color: #333;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .feedback {
+      max-height: 300px;
+      overflow-y: auto;
+      margin-bottom: 30px;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border-radius: 10px;
+    }
+
+    .feedback-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+      background-color: white;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .feedback-photo {
+      width: 50px !important;
+      height: 50px !important;
+      border-radius: 50% !important;
+      object-fit: cover !important;
+    }
+
+    .feedback-details {
+      flex: 1;
+    }
+
+    .feedback-details .username {
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    .feedback-details .rating {
+      color: #ff9500;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+    }
+
+    .feedback-details .ulasan {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #555;
+    }
+
+    #feedback-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      background-color: #f9f9f9;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    #feedback-form label {
+      font-weight: 500;
+      color: #555;
+    }
+
+    #rating {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: white;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    #feedback-comment {
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      min-height: 120px;
+      resize: vertical;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.95rem;
+    }
+
+    #submit-feedback {
+      padding: 12px;
+      background-color: #ff9500;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    #submit-feedback:hover {
+      background-color: #e08200;
+      transform: translateY(-3px);
+    }
+
+    /* Tour Section */
+    .container-tour {
+      padding: 80px 0;
+      background-color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container-tour h4 {
+      font-size: 2rem;
+      color: #333;
+      margin-bottom: 40px;
+      position: relative;
+      padding-bottom: 15px;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .container-tour h4::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background-color: #ff9500;
+    }
+
+    .container-tour-card {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+      width: 90%;
+      max-width: 1200px;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #1d3557;
+      color: white;
+      padding: 50px 0;
+      text-align: center;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    footer p {
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    /* No Results */
+    .no-results {
+      text-align: center;
+      padding: 40px;
+      color: #666;
+      font-size: 1.1rem;
+      background-color: #f9f9f9;
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .hero-section {
+        padding: 0 30px 30px 30px;
+      }
+      
+      .group {
+        width: 50%;
+      }
+      
+      .group-img {
+        width: 40%;
+      }
+      
+      .group h1 {
+        font-size: 2.5rem;
+      }
+      
+      .about-container {
+        gap: 30px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 0 20px;
+      }
+      
+      .navbar {
+        gap: 15px;
+      }
+      
+      .hero-section {
+        flex-direction: column;
+        align-items: center;
+        padding: 100px 20px 50px 20px;
+        text-align: center;
+      }
+      
+      .group, .group-img {
+        width: 100%;
+        align-items: center;
+        text-align: center;
+      }
+      
+      .group {
+        height: auto;
+        margin-bottom: 50px;
+      }
+      
+      .p-home a {
+        margin: 0 auto;
+      }
+      
+      .about-container {
+        flex-direction: column;
+      }
+      
+      .about-container div {
+        width: 100%;
+      }
+      
+      .about-container p {
+        text-align: center;
+      }
+      
+      .full-content {
+        width: 95%;
+        padding: 20px;
+      }
+      
+      #expanded-image {
+        height: 250px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .navbar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: white;
+        justify-content: center;
+        padding: 10px 0;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 99;
+      }
+      
+      .navbar li a {
+        color: #333;
+        font-size: 0.8rem;
+      }
+      
+      .search-form {
+        position: absolute;
+        top: 15px;
+        right: 70px;
+      }
+      
+      #search-input {
+        width: 150px;
+      }
+      
+      .group h1 {
+        font-size: 2rem;
+      }
+      
+      .p-home p {
+        font-size: 1rem;
+      }
+      
+      .card-container, .container-tour-card {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 
 <body id="home">
@@ -22,17 +860,16 @@
       <li><a href="#home">HOME</a></li>
       <li><a href="#about">ABOUT</a></li>
       <li><a href="#culture">CULTURE</a></li>
-      <li><a href="#contact">CONTACT</a></li>
       <li><a href="#tour">TOUR</a></li>
       <li><a id="dashboard-link" style="display: none;" href="./article.html">DASHBOARD</a></li>
       <li><a id="login-button" href="index.html">SIGN IN</a></li>
-      <li><a id="logout-button" href="javascript:logout()">SIGN OUT</a></li>
+      <li><a id="logout-button" style="display: none;" href="javascript:logout()">SIGN OUT</a></li>
     </ul>
   </header>
   <main>
     <section class="hero-section">
       <div class="group">
-        <h1 style="letter-spacing: 3px">CULTURAL HERITAGE</h1>
+        <h1>CULTURAL HERITAGE</h1>
         <div class="p-home">
           <p>
             Cultural heritage refers to cultural assets in the form of objects, buildings, structures, sites, or areas
@@ -58,73 +895,134 @@
           <p>
             Here, we showcase the beauty and diversity of Indonesian culture. From mesmerizing traditional dances to
             delicious local cuisines, we provide comprehensive information to introduce the richness of
-            the archipelago’s heritage. Explore the history, arts, traditions, and cultural legacies passed down through
+            the archipelago's heritage. Explore the history, arts, traditions, and cultural legacies passed down through
             generations. Enjoy this cultural journey with us!
           </p>
         </div>
       </div>
     </section>
+    
+    <!-- Search Results Section -->
+    <div id="search-results" class="search-results">
+      <h3>Search Results</h3>
+      <div id="search-results-container"></div>
+    </div>
+    
     <section id="culture" class="card-body">
-      <h4 class="about-title">CULTURE</h4>
-      <div class="card-container" id="culture-container"></div>
-      <div class="overlay" id="overlay"></div>
-      <div class="full-content" id="expanded-content">
-        <img id="expanded-image" src="" alt="Gambar Detail" />
-        <h2 style="padding: 10px 0px" id="expanded-title"></h2>
-        <p id="expanded-text"></p>
-        <p><strong>Location:</strong> <span id="popup-location"></span></p>
-        <div id="feedback-section">
-          <h3>Feedback</h3>
-          <div id="feedback-container" class="feedback"></div>
-          <div id="feedback-form-container">
-            <h4>Leave Your Feedback</h4>
-            <div id="feedback-form">
-              <label for="rating">Rating:</label>
-              <select id="rating">
-                <option value="5">5 - Excellent</option>
-                <option value="4">4 - Good</option>
-                <option value="3">3 - Average</option>
-                <option value="2">2 - Poor</option>
-                <option value="1">1 - Terrible</option>
-              </select>
-              <textarea id="feedback-comment" placeholder="Write your feedback here..."></textarea>
-              <button id="submit-feedback">Submit Feedback</button>
-            </div>
-          </div>
-        </div>
-        <button id="close-button" class="close-btn">Close</button>
+      <div class="about-title">
+        <h4>CULTURE</h4>
       </div>
+      <div class="card-container" id="culture-container"></div>
     </section>
+    
     <section id="tour" class="container-tour">
       <h4>TOURING</h4>
       <div class="container-tour-card" id="tour-container"></div>
     </section>
+    
+    <!-- Expanded Content Modal -->
+    <div class="overlay" id="overlay"></div>
+    <div class="full-content" id="expanded-content">
+      <button id="close-button" class="close-btn">X</button>
+      <img id="expanded-image" src="/placeholder.svg" alt="Gambar Detail" />
+      <h2 id="expanded-title"></h2>
+      <p id="expanded-text"></p>
+      <div id="map-container" class="map-container"></div>
+      
+      <div id="feedback-section">
+        <h3>Feedback</h3>
+        <div id="feedback-container" class="feedback"></div>
+        <div id="feedback-form-container">
+          <h4>Leave Your Feedback</h4>
+          <div id="feedback-form">
+            <label for="rating">Rating:</label>
+            <select id="rating">
+              <option value="5">5 - Excellent</option>
+              <option value="4">4 - Good</option>
+              <option value="3">3 - Average</option>
+              <option value="2">2 - Poor</option>
+              <option value="1">1 - Terrible</option>
+            </select>
+            <textarea id="feedback-comment" placeholder="Write your feedback here..."></textarea>
+            <button id="submit-feedback">Submit Feedback</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
-  <footer></footer>
+  
+  <footer>
+    <p>&copy; 2023 MyCulture. All rights reserved.</p>
+  </footer>
+  
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
-    $(document).ready(function () {
+    // Base URL for API - Fixed the triple slash issue
+    const BASE_URL = 'https://be-capstone-smkn9.vercel.app'; 
+    
+    // Global variables
+    let allArticles = [];
+    let cultureArticles = [];
+    let tourArticles = [];
+    
+    $(document).ready(function() {
       initApp();
+      
+      // Setup event listeners
+      $('#search-form').on('submit', function(e) {
+        e.preventDefault();
+        const query = $('#search-input').val().trim();
+        if (query) {
+          searchArticles(query);
+        }
+      });
+      
+      $('#close-button').on('click', closeExpandedContent);
+      $('#overlay').on('click', closeExpandedContent);
+      
+      $('#submit-feedback').on('click', function() {
+        const rating = $('#rating').val();
+        const comment = $('#feedback-comment').val().trim();
+        if (comment) {
+          submitFeedback(rating, comment);
+        }
+      });
+      
+      // Header scroll effect
+      $(window).scroll(function() {
+        if ($(this).scrollTop() > 50) {
+          $('header').addClass('scrolled');
+        } else {
+          $('header').removeClass('scrolled');
+        }
+      });
     });
-
+    
     function initApp() {
-      // loadCultureData();
-      // loadTourData();
-      // setupSearchFunctionality();
+      loadAllArticles();
       checkLoginStatus();
-
     }
-
+    
     function checkLoginStatus() {
       const token = localStorage.getItem('token');
-      const user = localStorage.getItem('user');
+      const userStr = localStorage.getItem('user');
+      
       if (token) {
         $('#login-button').hide();
         $('#logout-button').show();
-        if(user.role === 'admin') {
-          $('#dashboard-link').show();
-        } else {
-          $('#dashboard-link').hide();
+        
+        if (userStr) {
+          try {
+            const user = JSON.parse(userStr);
+            if (user && user.role === 'admin') {
+              $('#dashboard-link').show();
+            } else {
+              $('#dashboard-link').hide();
+            }
+          } catch (e) {
+            console.error('Error parsing user data:', e);
+            $('#dashboard-link').hide();
+          }
         }
       } else {
         $('#login-button').show();
@@ -132,28 +1030,260 @@
         $('#dashboard-link').hide();
       }
     }
-
-    function setupSearchFunctionality() {
-
+    
+    async function loadAllArticles() {
+      try {
+        const response = await fetch(`${BASE_URL}/articles`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch articles');
+        }
+        
+        const data = await response.json();
+        
+        // Check if the response has the expected format
+        if (data && data.payload) {
+          allArticles = data.payload;
+          
+          // Filter articles by category
+          cultureArticles = allArticles.filter(article => 
+            article.category.toLowerCase() === 'budaya'
+          );
+          
+          tourArticles = allArticles.filter(article => 
+            article.category.toLowerCase() === 'wisata'
+          );
+          
+          // Display articles
+          displayCultureArticles();
+          displayTourArticles();
+        } else {
+          console.error('Unexpected API response format:', data);
+          displayNoArticlesMessage();
+        }
+        
+      } catch (error) {
+        console.error('Error loading articles:', error);
+        displayNoArticlesMessage();
+      }
     }
 
-    function loadCultureData() {
-      // Fetch and display culture data here
+    function displayNoArticlesMessage() {
+      $('#culture-container').html('<div class="no-results">Unable to load culture articles. Please try again later.</div>');
+      $('#tour-container').html('<div class="no-results">Unable to load tour articles. Please try again later.</div>');
     }
-
-    function loadTourData() {
-      // Fetch and display tour data here
+    
+    function displayCultureArticles() {
+      const container = $('#culture-container');
+      container.empty();
+      
+      if (cultureArticles.length === 0) {
+        container.html('<div class="no-results">No culture articles found</div>');
+        return;
+      }
+      
+      cultureArticles.forEach(article => {
+        container.append(createArticleCard(article));
+      });
     }
-
-
+    
+    function displayTourArticles() {
+      const container = $('#tour-container');
+      container.empty();
+      
+      if (tourArticles.length === 0) {
+        container.html('<div class="no-results">No tour articles found</div>');
+        return;
+      }
+      
+      tourArticles.forEach(article => {
+        container.append(createArticleCard(article));
+      });
+    }
+    
+    function createArticleCard(article) {
+      return `
+        <div class="card" data-id="${article.id}">
+          <img src="${article.image}" alt="${article.title}" class="card-img">
+          <div class="card-content">
+            <span class="card-category">${article.category}</span>
+            <h3 class="card-title">${article.title}</h3>
+            <p class="card-desc">${article.shortdesc}</p>
+          </div>
+        </div>
+      `;
+    }
+    
+    // Search articles using ML endpoint - Using a direct API call to avoid route conflicts
+    async function searchArticles(query) {
+      try {
+        // Use a direct API call to the search endpoint to avoid route conflicts
+        const response = await fetch(`${BASE_URL}/articles/search?query=${encodeURIComponent(query)}`);
+        
+        if (!response.ok) {
+          throw new Error('Search failed');
+        }
+        
+        const data = await response.json();
+        
+        if (data.success && data.data && data.data.length > 0) {
+          displaySearchResults(data.data);
+        } else {
+          displayNoSearchResults();
+        }
+        
+      } catch (error) {
+        console.error('Error searching articles:', error);
+        // For demonstration, search locally if API fails
+        const results = searchLocally(query);
+        if (results.length > 0) {
+          displaySearchResults(results);
+        } else {
+          displayNoSearchResults();
+        }
+      }
+    }
+    
+    // Fallback local search if API fails
+    function searchLocally(query) {
+      query = query.toLowerCase();
+      return allArticles.filter(article => 
+        article.title.toLowerCase().includes(query) || 
+        article.shortdesc.toLowerCase().includes(query) || 
+        article.longdesc.toLowerCase().includes(query)
+      );
+    }
+    
+    function displaySearchResults(results) {
+      const container = $('#search-results-container');
+      const searchResults = $('#search-results');
+      
+      container.empty();
+      
+      results.forEach(article => {
+        container.append(createArticleCard(article));
+      });
+      
+      searchResults.show();
+      
+      // Scroll to search results
+      $('html, body').animate({
+        scrollTop: searchResults.offset().top - 100
+      }, 500);
+    }
+    
+    function displayNoSearchResults() {
+      const container = $('#search-results-container');
+      const searchResults = $('#search-results');
+      
+      container.html('<div class="no-results">No results found. Try different keywords.</div>');
+      searchResults.show();
+      
+      // Scroll to search results
+      $('html, body').animate({
+        scrollTop: searchResults.offset().top - 100
+      }, 500);
+    }
+    
+    // Event delegation for card clicks
+    $(document).on('click', '.card', function() {
+      const articleId = $(this).data('id');
+      const article = allArticles.find(a => a.id === articleId);
+      
+      if (article) {
+        showExpandedContent(article);
+      }
+    });
+    
+    function showExpandedContent(article) {
+      $('#expanded-image').attr('src', article.image);
+      $('#expanded-title').text(article.title);
+      $('#expanded-text').text(article.longdesc);
+      
+      // Set up map
+      if (article.location) {
+        $('#map-container').html(`
+          <iframe src="${article.location}" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        `);
+      } else {
+        $('#map-container').html('<p>No location data available</p>');
+      }
+      
+      // Load feedback (in a real app, you would fetch this from an API)
+      $('#feedback-container').html('<p>No feedback yet. Be the first to leave feedback!</p>');
+      
+      // Show the expanded content
+      $('#overlay').show();
+      $('#expanded-content').show();
+      
+      // Prevent body scrolling
+      $('body').css('overflow', 'hidden');
+    }
+    
+    function closeExpandedContent() {
+      $('#overlay').hide();
+      $('#expanded-content').hide();
+      
+      // Re-enable body scrolling
+      $('body').css('overflow', 'auto');
+    }
+    
+    function submitFeedback(rating, comment) {
+      // In a real app, you would send this to an API
+      console.log('Feedback submitted:', { rating, comment });
+      
+      // For demo purposes, just add it to the UI
+      const feedbackHtml = `
+        <div class="feedback-item">
+          <div class="rating">Rating: ${'★'.repeat(rating)}${'☆'.repeat(5-rating)}</div>
+          <div class="comment">${comment}</div>
+        </div>
+      `;
+      
+      $('#feedback-container').html(feedbackHtml);
+      
+      // Clear the form
+      $('#feedback-comment').val('');
+    }
+    
     function logout() {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       window.location.href = './index.html';
     }
-    function showFeedbackForm() {
-      const feedbackForm = document.getElementById("feedback-form");
-      feedbackForm.style.display = "block";
+    
+    // Function to refresh ML model (admin only)
+    async function refreshModel() {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          alert('You must be logged in to refresh the model');
+          return;
+        }
+        
+        const response = await fetch(`${BASE_URL}/articles/refresh-model`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to refresh model');
+        }
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          alert('ML model refreshed successfully!');
+        } else {
+          alert(`Failed to refresh model: ${result.message}`);
+        }
+        
+      } catch (error) {
+        console.error('Error refreshing model:', error);
+        alert('Error refreshing model. Please try again later.');
+      }
     }
   </script>
 </body>
